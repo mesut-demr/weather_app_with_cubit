@@ -1,5 +1,3 @@
-enum WeatherState{initial, loading, completed, errorMesssage}
-
 class WeatherModel {
   final String city;
   final String condition;
