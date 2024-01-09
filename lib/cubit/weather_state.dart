@@ -8,7 +8,7 @@ class WeatherState extends Equatable {
   final WeatherModel? weatherModel;
   final String? errorMessage;
 
-  WeatherState({required this.status, this.weatherModel, this.errorMessage});
+  const WeatherState({required this.status, this.weatherModel, this.errorMessage});
 
   @override
   // TODO: implement props

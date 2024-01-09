@@ -8,7 +8,7 @@ class WeatherApiService {
     try {
       Response response = await _dio
           .get('https://api.weatherapi.com/v1/current.json', queryParameters: {
-        'key': '',
+        'key': '96547a1fea574a13b4f90130232811',
         'q': '',
       });
 
