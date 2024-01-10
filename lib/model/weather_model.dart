@@ -3,5 +3,9 @@ class WeatherModel {
   final String condition;
   final double temperature;
 
-  WeatherModel({required this.city, required this.condition, required this.temperature});
+  WeatherModel({
+    required this.city,
+    required this.condition,
+    required this.temperature,
+  });
 }
