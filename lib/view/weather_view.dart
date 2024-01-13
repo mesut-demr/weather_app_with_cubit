@@ -15,7 +15,7 @@ class WeatherView extends StatelessWidget {
         child: BlocBuilder<WeatherCubit, WeatherState>(
           builder: (context, state) {
             if (state.status == WeatherStatus.loading) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (state.status == WeatherStatus.completed) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +28,7 @@ class WeatherView extends StatelessWidget {
             } else if (state.status == WeatherStatus.errorMessage) {
               return Text('Error: ${state.errorMessage}');
             } else {
-              return Text('Press the buttons to fetch weather data.');
+              return const Text('Press the buttons to fetch weather data.');
             }
           },
         ),
