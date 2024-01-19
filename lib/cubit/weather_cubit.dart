@@ -20,26 +20,39 @@ class WeatherCubit extends Cubit<WeatherState> {
   }
 
   Future<void> _init() async {
-    bool hasLocationPermission = await _checkLocationPermission();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLocationPermissionGranted =
+        prefs.getBool('isLocationPermissionGranted') ?? false;
 
-    if (hasLocationPermission) {
+    if (!isLocationPermissionGranted) {
+      _requestLocationPermission();
+
+      await prefs.setBool('isLocationPermissionGranted', true);
+      await fetchWeatherForUserLocation();
+    } else {
+      await fetchWeatherForUserLocation();
+    }
+  }
+    void _requestLocationPermission() async {
+    LocationPermission permission = await Geolocator.requestPermission();
+
+    print('Requested Location Permission: $permission');
+
+    if (permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('hasLocationPermission', true);
+
+      // Konum izni alındı, hava durumu bilgisini çek ve dinlemeye başla
       await fetchWeatherForUserLocation();
       _startListeningLocationChanges();
     } else {
-      // Kullanıcıdan konum izni iste
-      _requestLocationPermission();
+      emit(
+        state.copyWith(
+            status: WeatherStatus.errorMessage,
+            errorMessage: 'Konum izni verilmedi.'),
+      );
     }
-  }
-
-  Future<bool> _checkLocationPermission() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool hasPermission = prefs.getBool('hasLocationPermission') ?? false;
-
-    LocationPermission permission = await Geolocator.checkPermission();
-    print(
-        'Location Permission: $permission, hasLocationPermission: $hasPermission');
-
-    return hasPermission;
   }
 
   Future<void> fetchWeatherForUserLocation() async {
@@ -48,7 +61,6 @@ class WeatherCubit extends Cubit<WeatherState> {
     );
 
     try {
-      Position currentPosition = await locationService.getCurrentLocation();
       WeatherModel newWeather =
           await weatherApiService.fetchWeatherForUserLocation();
       emit(
@@ -76,28 +88,6 @@ class WeatherCubit extends Cubit<WeatherState> {
             status: WeatherStatus.completed, weatherModel: newWeather),
       );
     });
-  }
-
-  void _requestLocationPermission() async {
-    LocationPermission permission = await Geolocator.requestPermission();
-
-    print('Requested Location Permission: $permission');
-
-    if (permission == LocationPermission.always ||
-        permission == LocationPermission.whileInUse) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('hasLocationPermission', true);
-
-      // Konum izni alındı, hava durumu bilgisini çek ve dinlemeye başla
-      await fetchWeatherForUserLocation();
-      _startListeningLocationChanges();
-    } else {
-      emit(
-        state.copyWith(
-            status: WeatherStatus.errorMessage,
-            errorMessage: 'Konum izni verilmedi.'),
-      );
-    }
   }
 
   @override

@@ -16,14 +16,9 @@ class WeatherApiService {
         'key': '96547a1fea574a13b4f90130232811',
         'q': '${currentPosition.latitude},${currentPosition.longitude}',
       });
-
-      return WeatherModel(
-        city: response.data['location']['name'],
-        condition: response.data['current']['condition']['text'],
-        temperature: response.data['current']['temp_c'],
-      );
+      return WeatherModel.fromJson(response.data);
     } catch (e) {
-      throw Exception('Hava Durumu Bilgisi Alınamadı: $e');
+      throw Exception('Hava Durumu Bilgisi Alınamadı:$e');
     }
   }
 
@@ -35,16 +30,9 @@ class WeatherApiService {
         'q': city,
       });
 
-      return WeatherModel(
-        city: response.data['location']['name'],
-        condition: response.data['current']['condition']['text'],
-        temperature: response.data['current']['temp_c'],
-      );
+      return WeatherModel.fromJson(response.data);
     } catch (e) {
       throw Exception('Hava Durumu Bilgisi Alınamadaı: $e');
     }
   }
 }
-
-
-//try üstüne tanımlama yapılabilir

@@ -9,7 +9,6 @@ class WeatherView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final WeatherCubit weatherCubit = BlocProvider.of<WeatherCubit>(context);
     return Scaffold(
       body: Center(
         child: BlocBuilder<WeatherCubit, WeatherState>(
@@ -23,6 +22,10 @@ class WeatherView extends StatelessWidget {
                   Text('City: ${state.weatherModel?.city ?? ''}'),
                   Text('Condition: ${state.weatherModel?.condition ?? ''}'),
                   Text('Temperature: ${state.weatherModel?.temperature ?? ''}°C'),
+                  Text('Feels Like: ${state.weatherModel?.feelslike_c ?? ''}°C'),
+                  Text('Last Updated: ${state.weatherModel?.last_updated ?? ''}'),
+                  Text('Wind Speed: ${state.weatherModel?.wind_kph ?? ''} kph'),
+                  Text('Humidity: ${state.weatherModel?.humidity ?? ''}%'),
                 ],
               );
             } else if (state.status == WeatherStatus.errorMessage) {
@@ -35,7 +38,8 @@ class WeatherView extends StatelessWidget {
       ),
     );
   }
-void _checkLocationPermission(BuildContext context) async {
+
+  void _checkLocationPermission(BuildContext context) async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       // İzin iste
@@ -52,4 +56,3 @@ void _checkLocationPermission(BuildContext context) async {
     // Diğer işlemleri burada gerçekleştirebilirsiniz, örneğin hava durumu bilgisini çekmeye başlayabilirsiniz.
   }
 }
-
