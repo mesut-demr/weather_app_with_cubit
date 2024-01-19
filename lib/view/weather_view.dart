@@ -20,13 +20,13 @@ class WeatherView extends StatelessWidget {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('City: ${WeatherModel.conditions[state.weatherModel?.city ?? '']?? ''}'),
+                  Text('City: ${state.weatherModel?.city ?? ''}'),
                   Text('Condition: ${WeatherModel.conditions[state.weatherModel?.condition ?? '']?? ''}'),
-                  Text('Temperature:${WeatherModel.conditions[state.weatherModel?.temperature ?? '']?? ''}°C'),
-                  Text('Feels Like: ${WeatherModel.conditions[state.weatherModel?.feelslike_c ?? '']?? ''}°C'),
-                  Text('Last Updated: ${WeatherModel.conditions[state.weatherModel?.last_updated ?? '']?? ''}'),
-                  Text('Wind Speed: ${WeatherModel.conditions[state.weatherModel?.wind_kph ?? '']?? ''} kph'),
-                  Text('Humidity: ${WeatherModel.conditions[state.weatherModel?.humidity ?? '']?? ''}%'),
+                  Text('Temperature: ${state.weatherModel?.temperature ?? ''}°C'),
+                  Text('Feels Like: ${state.weatherModel?.feelslike_c ?? ''}°C'),
+                  Text('Last Updated: ${state.weatherModel?.last_updated ?? ''}'),
+                  Text('Wind Speed: ${state.weatherModel?.wind_kph ?? ''} kph'),
+                  Text('Humidity: ${state.weatherModel?.humidity ?? ''}%'),
                 ],
               );
             } else if (state.status == WeatherStatus.errorMessage) {
