@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_app_with_cubit/cubit/weather_cubit.dart';
 import 'package:weather_app_with_cubit/cubit/weather_state.dart';
+import 'package:weather_app_with_cubit/model/weather_model.dart';
 
 class WeatherView extends StatelessWidget {
   const WeatherView({super.key});
@@ -19,13 +20,13 @@ class WeatherView extends StatelessWidget {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('City: ${state.weatherModel?.city ?? ''}'),
-                  Text('Condition: ${state.weatherModel?.condition ?? ''}'),
-                  Text('Temperature: ${state.weatherModel?.temperature ?? ''}°C'),
-                  Text('Feels Like: ${state.weatherModel?.feelslike_c ?? ''}°C'),
-                  Text('Last Updated: ${state.weatherModel?.last_updated ?? ''}'),
-                  Text('Wind Speed: ${state.weatherModel?.wind_kph ?? ''} kph'),
-                  Text('Humidity: ${state.weatherModel?.humidity ?? ''}%'),
+                  Text('City: ${WeatherModel.conditions[state.weatherModel?.city ?? '']?? ''}'),
+                  Text('Condition: ${WeatherModel.conditions[state.weatherModel?.condition ?? '']?? ''}'),
+                  Text('Temperature:${WeatherModel.conditions[state.weatherModel?.temperature ?? '']?? ''}°C'),
+                  Text('Feels Like: ${WeatherModel.conditions[state.weatherModel?.feelslike_c ?? '']?? ''}°C'),
+                  Text('Last Updated: ${WeatherModel.conditions[state.weatherModel?.last_updated ?? '']?? ''}'),
+                  Text('Wind Speed: ${WeatherModel.conditions[state.weatherModel?.wind_kph ?? '']?? ''} kph'),
+                  Text('Humidity: ${WeatherModel.conditions[state.weatherModel?.humidity ?? '']?? ''}%'),
                 ],
               );
             } else if (state.status == WeatherStatus.errorMessage) {
