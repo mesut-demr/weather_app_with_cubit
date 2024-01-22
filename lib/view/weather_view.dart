@@ -21,10 +21,23 @@ class WeatherView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('City: ${state.weatherModel?.city ?? ''}'),
-                  Text('Condition: ${WeatherModel.conditions[state.weatherModel?.condition ?? '']?? ''}'),
-                  Text('Temperature: ${state.weatherModel?.temperature ?? ''}°C'),
-                  Text('Feels Like: ${state.weatherModel?.feelslike_c ?? ''}°C'),
-                  Text('Last Updated: ${state.weatherModel?.last_updated ?? ''}'),
+                  Text(
+                      'Condition: ${WeatherModel.conditions[state.weatherModel?.condition ?? ''] ?? ''}'),
+                  Container(
+                    height: 500,
+                    width: 500,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/gif/rainy.webp'),
+                          fit: BoxFit.cover),
+                    ),
+                  ),
+                  Text(
+                      'Temperature: ${state.weatherModel?.temperature ?? ''}°C'),
+                  Text(
+                      'Feels Like: ${state.weatherModel?.feelslike_c ?? ''}°C'),
+                  Text(
+                      'Last Updated: ${state.weatherModel?.last_updated ?? ''}'),
                   Text('Wind Speed: ${state.weatherModel?.wind_kph ?? ''} kph'),
                   Text('Humidity: ${state.weatherModel?.humidity ?? ''}%'),
                 ],
@@ -57,3 +70,8 @@ class WeatherView extends StatelessWidget {
     // Diğer işlemleri burada gerçekleştirebilirsiniz, örneğin hava durumu bilgisini çekmeye başlayabilirsiniz.
   }
 }
+
+//saate göre tema ayarlaması
+//konumun hafızada tutulması 
+//şehirlere göre arama yapma
+//tasarımın ayarlanması

@@ -53,7 +53,8 @@ class WeatherModel {
     'Moderate or heavy rain shower': 'Orta veya Şiddetli Yağmur Yağışı',
     'Torrential rain shower': 'Sağanak Yağmur Yağışı',
     'Light sleet showers': 'Hafif Karla Karışık Yağmur',
-    'Moderate or heavy sleet showers':'Orta veya Şiddetli Karla Karışık Yağmur',
+    'Moderate or heavy sleet showers':
+        'Orta veya Şiddetli Karla Karışık Yağmur',
     'Light snow showers': 'Hafif Kar Yağışı',
     'Moderate or heavy snow showers': 'Orta veya Yoğun Kar Yağışı',
     'Light showers of ice pellets': 'Hafif Buzlu',
@@ -63,6 +64,18 @@ class WeatherModel {
         'Gök Gürültülü Orta veya Şiddetli Yağmur',
     'Patchy light snow with thunder': 'Gök Gürültülü Hafif Kar Yağışı',
     'Moderate or heavy snow with thunder': 'Gök Gürültülü Orta veya Yoğun Kar',
+  };
+
+  static const Map<String, String> conditionGif = {
+    // 'Clear': 'https://cdn.pixabay.com/animation/2023/03/26/01/15/01-15-42-612_512.gif',
+    // 'Cloudy': 'https://cdn.pixabay.com/animation/2023/03/26/01/15/01-15-42-612_512.gif',
+    // 'Rainy': 'https://cdn.pixabay.com/animation/2023/03/26/01/15/01-15-42-612_512.gif',
+    // 'Snowy': 'https://cdn.pixabay.com/animation/2023/03/26/01/15/01-15-42-612_512.gif',
+    // 'Windy': 'https://pixabay.com/gifs/rain-storm-temporary-lake-toilet-4943/',
+    // 'Partly cloudy': 'https://pixabay.com/gifs/rain-storm-temporary-lake-toilet-4943/',
+    // 'Thunderstorm': 'https://pixabay.com/gifs/rain-storm-temporary-lake-toilet-4943/',
+    // 'Mist': 'https://pixabay.com/gifs/rain-storm-temporary-lake-toilet-4943/',
+    // 'Sunny': 'https://pixabay.com/gifs/rain-storm-temporary-lake-toilet-4943/',
   };
 
   WeatherModel({
@@ -89,5 +102,9 @@ class WeatherModel {
 
   static String _translateCondition(String englishCondition) {
     return conditions[englishCondition] ?? englishCondition;
+  }
+
+  static getConditionGif() {
+    return conditionGif[conditions] ?? ''; //tırnak içine default bir gif verilebiir
   }
 }

@@ -21,37 +21,42 @@ class WeatherCubit extends Cubit<WeatherState> {
 
   Future<void> _init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isLocationPermissionGranted =
-        prefs.getBool('isLocationPermissionGranted') ?? false;
 
-    if (!isLocationPermissionGranted) {
-      _requestLocationPermission();
+    double? savedLatitude = prefs.getDouble('latitude');
+    double? savedLongitude = prefs.getDouble('longitude');
 
-      await prefs.setBool('isLocationPermissionGranted', true);
-      await fetchWeatherForUserLocation();
+    if (savedLatitude != null && savedLongitude != null) {
+      await fetchWeatherForLocation(savedLatitude, savedLongitude);
     } else {
-      await fetchWeatherForUserLocation();
+     await _requestLocationPermission();
     }
   }
-    void _requestLocationPermission() async {
-    LocationPermission permission = await Geolocator.requestPermission();
+
+  Future<void> _requestLocationPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
 
     print('Requested Location Permission: $permission');
 
-    if (permission == LocationPermission.always ||
-        permission == LocationPermission.whileInUse) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('hasLocationPermission', true);
-
-      // Konum izni alındı, hava durumu bilgisini çek ve dinlemeye başla
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      print('Requested Location Permission: $permission');
+      if (permission == LocationPermission.denied) {
+        emit(state.copyWith(status: WeatherStatus.errorMessage,errorMessage: 'Location permission denied'));
+        return;
+      } 
+    }
+    
+    bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!isLocationServiceEnabled) {
+      emit(state.copyWith(
+          status: WeatherStatus.errorMessage,
+          errorMessage: 'Location services are disabled. Please enable them.'));
+      return;
+    }
+    try {
       await fetchWeatherForUserLocation();
-      _startListeningLocationChanges();
-    } else {
-      emit(
-        state.copyWith(
-            status: WeatherStatus.errorMessage,
-            errorMessage: 'Konum izni verilmedi.'),
-      );
+    } catch (e) {
+      emit(state.copyWith(status: WeatherStatus.errorMessage,errorMessage: 'Failed to fetch weather: $e')); 
     }
   }
 
@@ -59,21 +64,40 @@ class WeatherCubit extends Cubit<WeatherState> {
     emit(
       state.copyWith(status: WeatherStatus.loading),
     );
-
     try {
-      WeatherModel newWeather =
-          await weatherApiService.fetchWeatherForUserLocation();
-      emit(
-        state.copyWith(
-            status: WeatherStatus.completed, weatherModel: newWeather),
-      );
+      Position currentPosition = await locationService.getCurrentLocation();
+      await _saveLocationToPrefs(
+          currentPosition.latitude, currentPosition.longitude);
+      await fetchWeatherForLocation(
+          currentPosition.latitude, currentPosition.longitude);
     } catch (e) {
-      emit(
-        state.copyWith(
-            status: WeatherStatus.errorMessage,
-            errorMessage: 'Hava durumu alınamadı: $e'),
-      );
+      emit(state.copyWith(
+          status: WeatherStatus.errorMessage,
+          errorMessage: 'Hava Durumu Alınamadı:$e'));
     }
+  }
+
+  Future<void> fetchWeatherForLocation(
+      double latitude, double longitude) async {
+    emit(
+      state.copyWith(status: WeatherStatus.loading),
+    );
+    try {
+      WeatherModel newWeather = await weatherApiService.fetchWeatherForLocation(
+          latitude, longitude); // Hava durumu API'den alınır
+      emit(state.copyWith(
+          status: WeatherStatus.completed, weatherModel: newWeather));
+    } catch (e) {
+      emit(state.copyWith(
+          status: WeatherStatus.errorMessage,
+          errorMessage: 'Hava Durumu Alınamadı:$e'));
+    }
+  }
+
+  Future<void> _saveLocationToPrefs(double latitude, double longitude) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('latitude', latitude);
+    await prefs.setDouble('longitude', longitude);
   }
 
   void _startListeningLocationChanges() {
