@@ -28,7 +28,7 @@ class WeatherCubit extends Cubit<WeatherState> {
     if (savedLatitude != null && savedLongitude != null) {
       await fetchWeatherForLocation(savedLatitude, savedLongitude);
     } else {
-     await _requestLocationPermission();
+      await _requestLocationPermission();
     }
   }
 
@@ -41,11 +41,13 @@ class WeatherCubit extends Cubit<WeatherState> {
       permission = await Geolocator.requestPermission();
       print('Requested Location Permission: $permission');
       if (permission == LocationPermission.denied) {
-        emit(state.copyWith(status: WeatherStatus.errorMessage,errorMessage: 'Location permission denied'));
+        emit(state.copyWith(
+            status: WeatherStatus.errorMessage,
+            errorMessage: 'Location permission denied'));
         return;
-      } 
+      }
     }
-    
+
     bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!isLocationServiceEnabled) {
       emit(state.copyWith(
@@ -56,7 +58,9 @@ class WeatherCubit extends Cubit<WeatherState> {
     try {
       await fetchWeatherForUserLocation();
     } catch (e) {
-      emit(state.copyWith(status: WeatherStatus.errorMessage,errorMessage: 'Failed to fetch weather: $e')); 
+      emit(state.copyWith(
+          status: WeatherStatus.errorMessage,
+          errorMessage: 'Failed to fetch weather: $e'));
     }
   }
 
@@ -138,6 +142,20 @@ class WeatherCubit extends Cubit<WeatherState> {
             status: WeatherStatus.errorMessage,
             errorMessage: 'Hava Durumu Alınamadı.'),
       );
+    }
+  }
+
+  String getGreetingsMessage() {
+    final hour = DateTime.now().hour;
+
+    if (hour >= 6 && hour < 10) {
+      return 'Günaydın';
+    } else if (hour >= 10 && hour < 18) {
+      return 'İyi Günler';
+    } else if (hour >= 18 && hour < 24) {
+      return 'İyi Akşamlar';
+    } else {
+      return 'İyi Geceler';
     }
   }
 }
