@@ -148,9 +148,9 @@ class WeatherCubit extends Cubit<WeatherState> {
   String getGreetingsMessage() {
     final hour = DateTime.now().hour;
 
-    if (hour >= 6 && hour < 10) {
+    if (hour >= 6 && hour < 11) {
       return 'Günaydın';
-    } else if (hour >= 10 && hour < 18) {
+    } else if (hour >= 11 && hour < 18) {
       return 'İyi Günler';
     } else if (hour >= 18 && hour < 24) {
       return 'İyi Akşamlar';

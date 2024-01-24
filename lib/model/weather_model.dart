@@ -1,7 +1,7 @@
 class WeatherModel {
   final String city;
   final String condition;
-  final double temperature;
+  final int temperature;
   final double feelslike_c;
   final String last_updated;
   final double wind_kph;
@@ -92,7 +92,7 @@ class WeatherModel {
     return WeatherModel(
       city: json['location']['name'],
       condition: json['current']['condition']['text'],
-      temperature: (json['current']['temp_c'] as num).toDouble(),
+      temperature: (json['current']['temp_c'] as num).toInt(),
       feelslike_c: (json['current']['feelslike_c'] as num).toDouble(),
       last_updated: json['current']['last_updated'],
       wind_kph: (json['current']['wind_kph'] as num).toDouble(),
@@ -105,6 +105,6 @@ class WeatherModel {
   }
 
   static getConditionGif() {
-    return conditionGif[conditions] ?? ''; //tırnak içine default bir gif verilebiir
+    return conditionGif[conditions] ?? 'assets/gif/sunny.gif'; //tırnak içine default bir gif verilebiir
   }
 }
