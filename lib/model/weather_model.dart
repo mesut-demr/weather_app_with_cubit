@@ -1,3 +1,4 @@
+
 class WeatherModel {
   final String city;
   final String condition;
@@ -6,8 +7,11 @@ class WeatherModel {
   final String last_updated;
   final double wind_kph;
   final int humidity;
+  final double uv;
+  final double vis_km;
+  final int cloud;
 
-  static const Map<String, String> conditions = {
+  static const conditions = {
     'Clear': 'Açık',
     'Cloudy': 'Bulutlu',
     'Rainy': 'Yağmurlu',
@@ -66,18 +70,6 @@ class WeatherModel {
     'Moderate or heavy snow with thunder': 'Gök Gürültülü Orta veya Yoğun Kar',
   };
 
-  static const Map<String, String> conditionGif = {
-    // 'Clear': 'https://cdn.pixabay.com/animation/2023/03/26/01/15/01-15-42-612_512.gif',
-    // 'Cloudy': 'https://cdn.pixabay.com/animation/2023/03/26/01/15/01-15-42-612_512.gif',
-    // 'Rainy': 'https://cdn.pixabay.com/animation/2023/03/26/01/15/01-15-42-612_512.gif',
-    // 'Snowy': 'https://cdn.pixabay.com/animation/2023/03/26/01/15/01-15-42-612_512.gif',
-    // 'Windy': 'https://pixabay.com/gifs/rain-storm-temporary-lake-toilet-4943/',
-    // 'Partly cloudy': 'https://pixabay.com/gifs/rain-storm-temporary-lake-toilet-4943/',
-    // 'Thunderstorm': 'https://pixabay.com/gifs/rain-storm-temporary-lake-toilet-4943/',
-    // 'Mist': 'https://pixabay.com/gifs/rain-storm-temporary-lake-toilet-4943/',
-    // 'Sunny': 'https://pixabay.com/gifs/rain-storm-temporary-lake-toilet-4943/',
-  };
-
   WeatherModel({
     required this.city,
     required this.condition,
@@ -86,6 +78,9 @@ class WeatherModel {
     required this.last_updated,
     required this.wind_kph,
     required this.humidity,
+    required this.uv,
+    required this.vis_km,
+    required this.cloud,
   });
 
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
@@ -97,6 +92,9 @@ class WeatherModel {
       last_updated: json['current']['last_updated'],
       wind_kph: (json['current']['wind_kph'] as num).toDouble(),
       humidity: json['current']['humidity'],
+      uv: json['current']['uv'],
+      vis_km: (json['current']['vis_km'] as num).toDouble(),
+      cloud: json['current']['cloud'],
     );
   }
 
@@ -105,6 +103,18 @@ class WeatherModel {
   }
 
   static getConditionGif() {
-    return conditionGif[conditions] ?? 'assets/gif/sunny.gif'; //tırnak içine default bir gif verilebiir
+    switch (conditions as dynamic) {
+      case 'Partly cloudy':
+        return 'assets/gif/partly_clous_sunny.gif';
+      case 'Sunny':
+        return 'assets/gif/sunny.gif';
+      case 'Mist':
+        return 'assets/gif/mist.gif';
+      case 'Rainy':
+        return 'assets/gif/rainy.gif';
+
+      default:
+        return null;
+    }
   }
 }

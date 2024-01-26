@@ -77,8 +77,7 @@ class WeatherView extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        Image.asset(WeatherModel.getConditionGif() ??
-                            ""),
+                        Image.asset(WeatherModel.getConditionGif() ?? ""),
                         SizedBox(height: 12.h),
                         Text(
                           ' ${state.weatherModel?.last_updated ?? ''}', //refresh ile gelebilir
@@ -89,7 +88,8 @@ class WeatherView extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 12.h),
-                        Divider(height: 1.h, thickness: 0.5, color: Colors.grey),
+                        Divider(
+                            height: 1.h, thickness: 0.5, color: Colors.grey),
                         SizedBox(height: 12.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,7 +177,7 @@ class WeatherView extends StatelessWidget {
                                 elevation: 100,
                                 child: Center(
                                   child: Text(
-                                    'Nem: ${state.weatherModel?.humidity ?? ''}%',
+                                    'UV: ${state.weatherModel?.uv ?? ''}',
                                     style: TextStyle(
                                       color: Colors.grey[200],
                                       fontSize: 14.sp,
@@ -188,7 +188,54 @@ class WeatherView extends StatelessWidget {
                               ),
                             ),
                           ],
-                        )
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              height: 60.h,
+                              width: 180.w,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.r),
+                                ),
+                                color: Colors.blue[800],
+                                elevation: 100,
+                                child: Center(
+                                  child: Text(
+                                    'Görüş: ${state.weatherModel?.vis_km ?? ''}km',
+                                    style: TextStyle(
+                                      color: Colors.grey[200],
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 60.h,
+                              width: 180.w,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.r),
+                                ),
+                                color: Colors.blue[800],
+                                elevation: 100,
+                                child: Center(
+                                  child: Text(
+                                    'Cloud ${state.weatherModel?.cloud ?? ''}',
+                                    style: TextStyle(
+                                      color: Colors.grey[200],
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     );
                   } else if (state.status == WeatherStatus.errorMessage) {
@@ -224,9 +271,9 @@ class WeatherView extends StatelessWidget {
   }
 }
 
-// !!! İlk Açılışta konum izni isteme
+// !!! İlk Açılışta konum izni isteme --->akşam kontrol et
 //saate göre tema ayarlaması--> +
-//gifler eklenecek
+//gifler eklenecek----> bazıları eklenecek
 //konumun hafızada tutulması--> +
 //şehirlere göre arama yapma
-//tasarımın ayarlanması renk ayarı
+//tasarımın ayarlanması renk ayarı--->+

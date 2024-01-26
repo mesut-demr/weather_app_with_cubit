@@ -124,7 +124,21 @@ class WeatherCubit extends Cubit<WeatherState> {
     return super.close();
   }
 
-  Future<void> fetchWeatherForCity(String city) async {
+  String getGreetingsMessage() {
+    final hour = DateTime.now().hour;
+
+    if (hour >= 6 && hour < 11) {
+      return 'Günaydın';
+    } else if (hour >= 11 && hour < 18) {
+      return 'İyi Günler';
+    } else if (hour >= 18 && hour < 24) {
+      return 'İyi Akşamlar';
+    } else {
+      return 'İyi Geceler';
+    }
+  }
+
+    Future<void> fetchWeatherForCity(String city) async {
     emit(
       state.copyWith(status: WeatherStatus.loading),
     );
@@ -142,20 +156,6 @@ class WeatherCubit extends Cubit<WeatherState> {
             status: WeatherStatus.errorMessage,
             errorMessage: 'Hava Durumu Alınamadı.'),
       );
-    }
-  }
-
-  String getGreetingsMessage() {
-    final hour = DateTime.now().hour;
-
-    if (hour >= 6 && hour < 11) {
-      return 'Günaydın';
-    } else if (hour >= 11 && hour < 18) {
-      return 'İyi Günler';
-    } else if (hour >= 18 && hour < 24) {
-      return 'İyi Akşamlar';
-    } else {
-      return 'İyi Geceler';
     }
   }
 }
