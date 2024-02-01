@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:label="weather_app_with_cubit"
+        android:label="Hava Durumu"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -138,7 +138,7 @@ class WeatherCubit extends Cubit<WeatherState> {
     }
   }
 
-    Future<void> fetchWeatherForCity(String city) async {
+  Future<void> fetchWeatherForCity(String city) async {
     emit(
       state.copyWith(status: WeatherStatus.loading),
     );

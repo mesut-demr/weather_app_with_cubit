@@ -102,19 +102,18 @@ class WeatherModel {
     return conditions[englishCondition] ?? englishCondition;
   }
 
-  static getConditionGif() {
-    switch (conditions as dynamic) {
+  static String getConditionGif(String condition) {
+    switch (condition) {
       case 'Partly cloudy':
-        return 'assets/gif/partly_clous_sunny.gif';
+        return 'assets/gif/partly_cloud_sunny.gif';
       case 'Sunny':
         return 'assets/gif/sunny.gif';
       case 'Mist':
         return 'assets/gif/mist.gif';
       case 'Rainy':
         return 'assets/gif/rainy.gif';
-
       default:
-        return null;
+        return 'assets/gif/sunny.gif';
     }
   }
 }
