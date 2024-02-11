@@ -11,7 +11,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     print("height: ${MediaQuery.of(context).size.height}");
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       },
       child: BlocProvider(
         create: (context) => WeatherCubit(),
-        child: const WeatherView(),
+        child: WeatherView(),
       ),
     );
   }

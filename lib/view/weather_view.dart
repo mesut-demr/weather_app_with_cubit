@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:weather_app_with_cubit/cubit/weather_cubit.dart';
 import 'package:weather_app_with_cubit/cubit/weather_state.dart';
 import 'package:weather_app_with_cubit/model/weather_model.dart';
+import 'package:weather_app_with_cubit/widget/weaher_card.dart';
+import 'package:weather_app_with_cubit/widget/weather_property_text.dart';
 
 class WeatherView extends StatelessWidget {
-  const WeatherView({super.key});
+  WeatherView({super.key});
+
+  TextEditingController cityTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,295 +19,185 @@ class WeatherView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: isDayTime
-                  ? const LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 17, 192, 245),
-                        Color(0xFF146DF3),
-                      ],
-                    )
-                  : const LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 36, 37, 37),
-                        Color.fromARGB(255, 44, 78, 110),
-                      ],
-                    ),
+        body: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: isDayTime
+                    ? const LinearGradient(
+                        colors: [
+                          Color.fromARGB(255, 17, 192, 245),
+                          Color(0xFF146DF3),
+                        ],
+                      )
+                    : const LinearGradient(
+                        colors: [
+                          Color.fromARGB(255, 36, 37, 37),
+                          Color.fromARGB(255, 44, 78, 110),
+                        ],
+                      ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 32.h, horizontal: 12.w),
+                child: Center(
+                  child: BlocBuilder<WeatherCubit, WeatherState>(
+                    builder: (context, state) {
+                      if (state.status == WeatherStatus.loading) {
+                        return const CircularProgressIndicator();
+                      } else if (state.status == WeatherStatus.completed) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                           WeatherPropertyText(title: context.read<WeatherCubit>().getGreetingsMessage(),
+                           fontSize: 18.sp,
+                           ),
+                            SizedBox(height: 6.h),
+                            WeatherPropertyText(
+                            title: ' ${state.weatherModel?.city ?? ''}',
+                            fontSize: 52.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: -1,
+                            ),
+                            SizedBox(height: 12.h),
+                            WeatherPropertyText(
+                            title: ' ${WeatherModel.conditions[state.weatherModel?.condition ?? ''] ?? ''}',
+                            fontSize: 20.sp,
+                            ),
+                            SizedBox(height: 12.h),
+                            WeatherPropertyText(title: ' ${state.weatherModel?.temperature ?? ''}°C',
+                            fontSize: 110.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.grey[300],
+                            ),
+                            Image.asset(WeatherModel.getConditionGif(state.weatherModel?.condition ?? ''),
+                            ),
+                            Divider(
+                                height: 1.h,
+                                thickness: 0.5,
+                                color: Colors.grey),
+                            SizedBox(height: 12.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                WeatherCard(title: 'Hissedilen Sıcaklık: ${state.weatherModel?.feelslike_c ?? ''}°C',),
+                                SizedBox(height: 12.h),
+                               WeatherCard(title:  'Rüzgar: ${state.weatherModel?.wind_kph ?? ''} kph',),
+                                SizedBox(height: 12.h),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                WeatherCard(title:'Nem: ${state.weatherModel?.humidity ?? ''}%',),
+                               WeatherCard(title: 'UV: ${state.weatherModel?.uv ?? ''}',),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                               WeatherCard(title: 'Görüş: ${state.weatherModel?.vis_km ?? ''}km',),
+                               WeatherCard(title: 'Bulut: ${state.weatherModel?.cloud ?? ''}',),
+                              ],
+                            ),
+                          SizedBox(height: 12.h),
+                         WeatherPropertyText(
+                          title: ' ${state.weatherModel?.last_updated ?? ''}',
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w300,
+                         ),
+                          ],
+                        );
+                      } else if (state.status == WeatherStatus.errorMessage) {
+                        return Text('Error: ${state.errorMessage}');
+                      } else {
+                        return const Text('Press the buttons to fetch weather data.');
+                      }
+                    },
+                  ),
+                ),
+              ),
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 32.h, horizontal: 12.w),
-              child: Center(
+            Positioned(
+              top: 0.04.sh,
+              left: 0.01.sw,
+              right: 0.01.sw,
+              child: SizedBox(
+                height: 0.6.sh,
                 child: BlocBuilder<WeatherCubit, WeatherState>(
                   builder: (context, state) {
-                    if (state.status == WeatherStatus.loading) {
-                      return const CircularProgressIndicator();
-                    } else if (state.status == WeatherStatus.completed) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextField(
-                            onChanged: (value) {
-                              context.read<WeatherCubit>().filterCitites(value);
-                            },
-                            decoration: const InputDecoration(
-                                labelText: 'Şehir Ara',
-                                prefixIcon: Icon(Icons.search),
-                                ),
-                          ),
-                          SizedBox(
-                            height: 200.h,
-                            child: ListView.builder(
-                              itemCount: state.filteredCityList!.length,
-                              itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(state.filteredCityList!    [index]),
-                                onTap: () {
-                                  context.read<WeatherCubit>().selectCity(state.filteredCityList![index]);
-                                  print('ffffffffff ${state.filteredCityList![index]}');
-                                },
-                              );
-                            },
-                            ),
-                          ),
-                          SizedBox(height: 16.h),
-                          Text(
-                            context.read<WeatherCubit>().getGreetingsMessage(),
-                            style: TextStyle(
-                              color: Colors.grey[300],
-                              fontSize: 22.sp,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                          SizedBox(height: 12.h),
-                          Text(
-                            ' ${state.weatherModel?.city ?? ''}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 50.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          SizedBox(height: 12.h),
-                          Text(
-                            ' ${WeatherModel.conditions[state.weatherModel?.condition ?? ''] ?? ''}',
-                            style: TextStyle(
-                              color: Colors.grey[200],
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          SizedBox(height: 12.h),
-                          Text(
-                            ' ${state.weatherModel?.temperature ?? ''}°C',
-                            style: TextStyle(
-                              color: Colors.grey[200],
-                              fontSize: 110.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          Image.asset(
-                            WeatherModel.getConditionGif(
-                                state.weatherModel?.condition ?? ''),
-                          ),
-                          SizedBox(height: 12.h),
-                          Text(
-                            ' ${state.weatherModel?.last_updated ?? ''}', //refresh ile gelebilir
-                            style: TextStyle(
-                              color: Colors.grey[200],
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                          SizedBox(height: 12.h),
-                          Divider(
-                              height: 1.h, thickness: 0.5, color: Colors.grey),
-                          SizedBox(height: 12.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                height: 60.h,
-                                width: 180.w,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                  ),
-                                  color: Colors.black26,
-                                  elevation: 100,
-                                  child: Center(
-                                    child: Text(
-                                      'Hissedilen Sıcaklık: ${state.weatherModel?.feelslike_c ?? ''}°C',
-                                      style: TextStyle(
-                                        color: Colors.grey[200],
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ),
+                    return Column(
+                      children: [
+                        TextField(
+                          scrollPadding: EdgeInsets.zero,
+                          controller: cityTextController,
+                          onTap: () {
+                            context.read<WeatherCubit>().setSearchButtonClicked(true);
+                          },
+                          onChanged: (value) {
+                            context.read<WeatherCubit>().filterCitites(value);
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            fillColor: Colors.white54,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16.r),
                               ),
-                              SizedBox(height: 12.h),
-                              SizedBox(
-                                height: 60.h,
-                                width: 180.w,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                  ),
-                                  color: Colors.black26,
-                                  elevation: 100,
-                                  child: Center(
-                                    child: Text(
-                                      'Rüzgar: ${state.weatherModel?.wind_kph ?? ''} kph',
-                                      style: TextStyle(
-                                        color: Colors.grey[200],
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16.r),
                               ),
-                              SizedBox(height: 14.h),
-                            ],
+                            ),
+                            labelText: 'Şehir Ara',
+                            prefixIcon: const Icon(Icons.search),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                height: 60.h,
-                                width: 180.w,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                  ),
-                                  color: Colors.black26,
-                                  elevation: 100,
-                                  child: Center(
-                                    child: Text(
-                                      'Nem: ${state.weatherModel?.humidity ?? ''}%',
-                                      style: TextStyle(
-                                        color: Colors.grey[200],
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
+                        ),
+                        SizedBox(height: 16.h),
+                        context.read<WeatherCubit>().isSearchClicked
+                            ? Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 0.h),
+                              child: Container(
+                                padding: EdgeInsets.zero,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white54,
                                 ),
+                                height: 0.2.sh,
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                    physics: const AlwaysScrollableScrollPhysics(),
+                                    itemCount: state.filteredCityList!.length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        style: ListTileStyle.list,
+                                        contentPadding: EdgeInsets.symmetric(vertical: 0.h,horizontal: 10.w),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r),),
+                                        title: Text(state.filteredCityList![index]),
+                                        onTap: () {
+                                          final selectedCity =state.filteredCityList![index];
+                                          context.read<WeatherCubit>().selectCity(selectedCity);
+                                          context.read<WeatherCubit>().fetchWeatherForCity(selectedCity);
+                                          context.read<WeatherCubit>().setSearchButtonClicked(false);
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                          print('ffffffffff ${state.filteredCityList![index]}');
+                                        },
+                                      );
+                                    },
+                                  ),
                               ),
-                              SizedBox(
-                                height: 60.h,
-                                width: 180.w,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                  ),
-                                  color: Colors.black26,
-                                  elevation: 100,
-                                  child: Center(
-                                    child: Text(
-                                      'UV: ${state.weatherModel?.uv ?? ''}',
-                                      style: TextStyle(
-                                        color: Colors.grey[200],
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                height: 60.h,
-                                width: 180.w,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                  ),
-                                  color: Colors.black26,
-                                  elevation: 100,
-                                  child: Center(
-                                    child: Text(
-                                      'Görüş: ${state.weatherModel?.vis_km ?? ''}km',
-                                      style: TextStyle(
-                                        color: Colors.grey[200],
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 60.h,
-                                width: 180.w,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                  ),
-                                  color: Colors.black26,
-                                  elevation: 100,
-                                  child: Center(
-                                    child: Text(
-                                      'Bulut ${state.weatherModel?.cloud ?? ''}',
-                                      style: TextStyle(
-                                        color: Colors.grey[200],
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    } else if (state.status == WeatherStatus.errorMessage) {
-                      return Text('Error: ${state.errorMessage}');
-                    } else {
-                      return const Text(
-                          'Press the buttons to fetch weather data.');
-                    }
+                            )
+                            : const SizedBox(),
+                      ],
+                    );
                   },
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
-
-  void _checkLocationPermission(BuildContext context) async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      // İzin iste
-      _requestLocationPermission(context);
-    } else {
-      // İzin zaten var veya kullanıcı daha önce reddetti
-      // Burada başka bir şey yapabilirsiniz, örneğin bir mesaj gösterebilirsiniz.
-    }
-  }
-
-  void _requestLocationPermission(BuildContext context) async {
-    // Konum izni iste
-    await Geolocator.requestPermission();
-    // Diğer işlemleri burada gerçekleştirebilirsiniz, örneğin hava durumu bilgisini çekmeye başlayabilirsiniz.
-  }
 }
-
-// !!! İlk Açılışta konum izni isteme --->-
-//saate göre tema ayarlaması--> +
-//gifler eklenecek----> bazıları eklenecek
-//konumun hafızada tutulması--> +
-//şehirlere göre arama yapma
-//tasarımın ayarlanması renk ayarı--->+
