@@ -15,11 +15,11 @@ https://github.com/mesut-demr/weather_app_with_cubit/assets/81968170/cb92d4e4-1a
 
 # App Architecture
 
-- [✔️] The **BloC (cubit)** structure was used to manage the state.
-- [✔️] The **dio** package was used to pull the api.
-- [✔️] The user's position is stored with **shared_preferences**.
-- [✔️] The **geolocator** package was used to track the user's location.
-- [✔️] The **equatable** package was used to compare the objects.
+- &#9745; The **BloC (cubit)** structure was used to manage the state.
+- &#9745; The **dio** package was used to pull the api.
+- &#9745; The user's position is stored with **shared_preferences**.
+- &#9745; The **geolocator** package was used to track the user's location.
+- &#9745; The **equatable** package was used to compare the objects.
 
 
 # Supported Features
