@@ -11,11 +11,11 @@ A simple weather App created using Flutter and Dart and using API from [WeatherA
 
 # App Architecture
 
--[x] The **BloC (cubit)** structure was used to manage the state.
--[x] The **dio** package was used to pull the api.
--[x] The user's position is stored with **shared_preferences**.
--[x] The **geolocator** package was used to track the user's location.
--[x] The **equatable** package was used to compare the objects.
+- [x] The **BloC (cubit)** structure was used to manage the state.
+- [x] The **dio** package was used to pull the api.
+- [x] The user's position is stored with **shared_preferences**.
+- [x] The **geolocator** package was used to track the user's location.
+- [x] The **equatable** package was used to compare the objects.
 
 # Supported Features
 
