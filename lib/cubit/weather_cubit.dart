@@ -35,7 +35,7 @@ class WeatherCubit extends Cubit<WeatherState> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        emit(state.copyWith(status: WeatherStatus.errorMessage,errorMessage: 'Location permission denied'));
+        emit(state.copyWith(status: WeatherStatus.errorMessage,errorMessage: 'Konuma izin verilmedi'));
         return;
       }
     }
@@ -43,7 +43,7 @@ class WeatherCubit extends Cubit<WeatherState> {
       await fetchWeatherForUserLocation();
       _startListeningLocationChanges();
     } catch (e) {
-      emit(state.copyWith(status: WeatherStatus.errorMessage,errorMessage: 'Failed to fetch weather: $e'));
+      emit(state.copyWith(status: WeatherStatus.errorMessage,errorMessage: 'Hava Durumu Alınamadı: $e'));
     }
   }
 

@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
     print("width: ${MediaQuery.of(context).size.width}");
     return ScreenUtilInit(
       designSize: const Size(392, 850),
-      
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {

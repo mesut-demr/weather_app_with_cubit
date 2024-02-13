@@ -18,7 +18,7 @@ double? letterSpacing;
 
   @override
   Widget build(BuildContext context) {
-    return Text(title, //refresh ile gelebilir
+    return Text(title,
          style: TextStyle(
            color: color?? Colors.grey[200],
            fontSize: fontSize ?? 14.sp,

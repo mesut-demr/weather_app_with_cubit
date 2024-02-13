@@ -46,72 +46,72 @@ class WeatherView extends StatelessWidget {
                         return const CircularProgressIndicator();
                       } else if (state.status == WeatherStatus.completed) {
                         return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                            WeatherPropertyText(title: context.read<WeatherCubit>().getGreetingsMessage(),
                            fontSize: 18.sp,
                            ),
-                            SizedBox(height: 6.h),
                             WeatherPropertyText(
                             title: ' ${state.weatherModel?.city ?? ''}',
-                            fontSize: 52.sp,
+                            fontSize: 50.sp,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             letterSpacing: -1,
                             ),
-                            SizedBox(height: 12.h),
                             WeatherPropertyText(
                             title: ' ${WeatherModel.conditions[state.weatherModel?.condition ?? ''] ?? ''}',
                             fontSize: 20.sp,
                             ),
-                            SizedBox(height: 12.h),
                             WeatherPropertyText(title: ' ${state.weatherModel?.temperature ?? ''}°C',
-                            fontSize: 110.sp,
+                            fontSize: 100.sp,
                             fontWeight: FontWeight.w700,
                             color: Colors.grey[300],
+                            letterSpacing: -6,
                             ),
                             Image.asset(WeatherModel.getConditionGif(state.weatherModel?.condition ?? ''),
                             ),
                             Divider(
-                                height: 1.h,
+                                height: 0.h,
                                 thickness: 0.5,
                                 color: Colors.grey),
+                                SizedBox(height: 12.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                              WeatherCard(title: 'Hissedilen Sıcaklık', subTitle: '${state.weatherModel?.feelslike_c ?? ''}°C',icon: Icons.thermostat_rounded),
+                               WeatherCard(title: 'Rüzgar', subTitle:'${state.weatherModel?.wind_kph ?? ''} kph',icon: Icons.wind_power),
+                              ],
+                            ),
                             SizedBox(height: 12.h),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                WeatherCard(title: 'Hissedilen Sıcaklık: ${state.weatherModel?.feelslike_c ?? ''}°C',),
-                                SizedBox(height: 12.h),
-                               WeatherCard(title:  'Rüzgar: ${state.weatherModel?.wind_kph ?? ''} kph',),
-                                SizedBox(height: 12.h),
+                                WeatherCard(title: 'Nem', subTitle:'${state.weatherModel?.humidity ?? ''}%',icon: Icons.water_drop_rounded),
+                               WeatherCard(title: 'UV', subTitle: '${state.weatherModel?.uv ?? ''}',icon: Icons.sunny,),
                               ],
                             ),
+                            SizedBox(height: 12.h),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                WeatherCard(title:'Nem: ${state.weatherModel?.humidity ?? ''}%',),
-                               WeatherCard(title: 'UV: ${state.weatherModel?.uv ?? ''}',),
+                               WeatherCard(title: 'Görüş', subTitle:'${state.weatherModel?.vis_km ?? ''}km',icon: Icons.foggy),
+                               WeatherCard(title: 'Bulut', subTitle:'${state.weatherModel?.cloud ?? ''}',icon: Icons.cloud),
                               ],
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                               WeatherCard(title: 'Görüş: ${state.weatherModel?.vis_km ?? ''}km',),
-                               WeatherCard(title: 'Bulut: ${state.weatherModel?.cloud ?? ''}',),
-                              ],
-                            ),
-                          SizedBox(height: 12.h),
+                            SizedBox(height: 28.h),
                          WeatherPropertyText(
                           title: ' ${state.weatherModel?.last_updated ?? ''}',
                           fontSize: 10.sp,
                           fontWeight: FontWeight.w300,
                          ),
+                         SizedBox(height: 28.h),
                           ],
                         );
                       } else if (state.status == WeatherStatus.errorMessage) {
-                        return Text('Error: ${state.errorMessage}');
+                        return Text('Hata: ${state.errorMessage}');
                       } else {
-                        return const Text('Press the buttons to fetch weather data.');
+                        return const Text('');
                       }
                     },
                   ),
@@ -119,7 +119,7 @@ class WeatherView extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 0.04.sh,
+              top: 0.03.sh,
               left: 0.01.sw,
               right: 0.01.sw,
               child: SizedBox(
@@ -128,37 +128,41 @@ class WeatherView extends StatelessWidget {
                   builder: (context, state) {
                     return Column(
                       children: [
-                        TextField(
-                          scrollPadding: EdgeInsets.zero,
-                          controller: cityTextController,
-                          onTap: () {
-                            context.read<WeatherCubit>().setSearchButtonClicked(true);
-                          },
-                          onChanged: (value) {
-                            context.read<WeatherCubit>().filterCitites(value);
-                          },
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.zero,
-                            filled: true,
-                            fillColor: Colors.white54,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(16.r),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: TextField(
+                            scrollPadding: EdgeInsets.zero,
+                            controller: cityTextController,
+                            onTap: () {
+                              context.read<WeatherCubit>().setSearchButtonClicked(true);
+                            },
+                            onChanged: (value) {
+                              context.read<WeatherCubit>().filterCitites(value);
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(horizontal: 26.w,vertical: 0.h),
+                              filled: true,
+                              fillColor: Colors.white54,
+                              enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white70),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.r),
+                                ),
                               ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(16.r),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Colors.white70),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.r),
+                                ),
                               ),
+                              labelText: 'Şehir Ara',
+                              prefixIcon: const Icon(Icons.search),
                             ),
-                            labelText: 'Şehir Ara',
-                            prefixIcon: const Icon(Icons.search),
                           ),
                         ),
-                        SizedBox(height: 16.h),
                         context.read<WeatherCubit>().isSearchClicked
                             ? Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 0.h),
+                              padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 0.h),
                               child: Container(
                                 padding: EdgeInsets.zero,
                                 decoration: const BoxDecoration(
@@ -201,3 +205,5 @@ class WeatherView extends StatelessWidget {
     );
   }
 }
+
+
