@@ -116,4 +116,12 @@ class WeatherModel {
         return 'assets/gif/sunny.gif';
     }
   }
+  static String getNightConditionGif(String condition){
+    switch (condition) {
+      case 'Partly cloudy':
+      return 'assets/gif/night_partly_cloud.gif';
+      default:
+        return 'assets/gif/night_partly_cloud.gif';
+    }
+  }
 }

@@ -69,8 +69,8 @@ class WeatherView extends StatelessWidget {
                             color: Colors.grey[300],
                             letterSpacing: -6,
                             ),
-                            Image.asset(WeatherModel.getConditionGif(state.weatherModel?.condition ?? ''),
-                            ),
+                           isDayTime ? Image.asset(WeatherModel.getConditionGif(state.weatherModel?.condition ?? ''),
+                            ):Image.asset(WeatherModel.getNightConditionGif(state.weatherModel?.condition ?? ''),),
                             Divider(
                                 height: 0.h,
                                 thickness: 0.5,
@@ -185,7 +185,6 @@ class WeatherView extends StatelessWidget {
                                           context.read<WeatherCubit>().fetchWeatherForCity(selectedCity);
                                           context.read<WeatherCubit>().setSearchButtonClicked(false);
                                           FocusManager.instance.primaryFocus?.unfocus();
-                                          print('ffffffffff ${state.filteredCityList![index]}');
                                         },
                                       );
                                     },

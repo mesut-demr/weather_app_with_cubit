@@ -1,14 +1,21 @@
 # weather_app_with_cubit
 
-A weather App created using Flutter and Dart and using API from [WeatherApi](https://www.weatherapi.com/)
+A simple weather App created using Flutter and Dart and using API from [WeatherApi](https://www.weatherapi.com/)
+
+**A screenshot from the evening hours**
+//ekran kaydı gelecek 
+
+**A screenshot from the morning hours**
+//ekran kaydı gelecek
+
 
 # App Architecture
 
-- The **BloC (cubit)** structure was used to manage the state.
-- The **dio** package was used to pull the api.
-- The user's position is stored with **shared_preferences**.
-- The **geolocator** package was used to track the user's location.
-- The **equatable** package was used to compare the objects.
+-[x] The **BloC (cubit)** structure was used to manage the state.
+-[x] The **dio** package was used to pull the api.
+-[x] The user's position is stored with **shared_preferences**.
+-[x] The **geolocator** package was used to track the user's location.
+-[x] The **equatable** package was used to compare the objects.
 
 # Supported Features
 
