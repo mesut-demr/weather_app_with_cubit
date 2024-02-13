@@ -2,15 +2,16 @@
 
 A simple weather App created using Flutter and Dart and using API from [WeatherApi](https://www.weatherapi.com/)
 
-**A screenshot from the evening hours**
-//ekran kaydı gelecek 
-
 **A screenshot from the morning hours**
-//ekran kaydı gelecek
 
 
-https://github.com/mesut-demr/weather_app_with_cubit/assets/81968170/cb92d4e4-1a23-4e41-a43c-bd847e89f07a
+https://github.com/mesut-demr/weather_app_with_cubit/assets/81968170/8e054260-6c1c-419b-a6e2-9d74809481b6
 
+
+**A screenshot from the evening hours**
+
+
+https://github.com/mesut-demr/weather_app_with_cubit/assets/81968170/3a5df7d8-df20-4d00-99c9-0f4787445609
 
 
 # App Architecture
