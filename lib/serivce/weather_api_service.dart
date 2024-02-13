@@ -13,7 +13,7 @@ class WeatherApiService {
 
       Response response = await _dio
           .get('https://api.weatherapi.com/v1/current.json', queryParameters: {
-        'key': '96547a1fea574a13b4f90130232811',
+        'key': 'Your_Api_Key',
         'q': '${currentPosition.latitude},${currentPosition.longitude}',
       });
       return WeatherModel.fromJson(response.data);
@@ -27,7 +27,7 @@ class WeatherApiService {
     try {
       Response response = await _dio
           .get('https://api.weatherapi.com/v1/current.json', queryParameters: {
-        'key': '96547a1fea574a13b4f90130232811',
+        'key': 'Your_Api_Key',
         'q': '$latitude,$longitude',
       });
       return WeatherModel.fromJson(response.data);
@@ -40,7 +40,7 @@ class WeatherApiService {
     try {
       Response response = await _dio
           .get('https://api.weatherapi.com/v1/current.json', queryParameters: {
-        'key': '96547a1fea574a13b4f90130232811',
+        'key': 'Your_Api_Key',
         'q': city,
       });
 

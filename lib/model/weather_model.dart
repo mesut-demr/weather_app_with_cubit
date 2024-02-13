@@ -11,6 +11,34 @@ class WeatherModel {
   final double vis_km;
   final int cloud;
 
+    WeatherModel({
+    required this.city,
+    required this.condition,
+    required this.temperature,
+    required this.feelslike_c,
+    required this.last_updated,
+    required this.wind_kph,
+    required this.humidity,
+    required this.uv,
+    required this.vis_km,
+    required this.cloud,
+  });
+
+  factory WeatherModel.fromJson(Map<String, dynamic> json) {
+    return WeatherModel(
+      city: json['location']['name'],
+      condition: json['current']['condition']['text'],
+      temperature: (json['current']['temp_c'] as num).toInt(),
+      feelslike_c: (json['current']['feelslike_c'] as num).toDouble(),
+      last_updated: json['current']['last_updated'],
+      wind_kph: (json['current']['wind_kph'] as num).toDouble(),
+      humidity: json['current']['humidity'],
+      uv: json['current']['uv'],
+      vis_km: (json['current']['vis_km'] as num).toDouble(),
+      cloud: json['current']['cloud'],
+    );
+  }
+
 //data from api translated into turkish
   static const conditions = {
     'Clear ': 'Açık',
@@ -71,35 +99,7 @@ class WeatherModel {
     'Moderate or heavy snow with thunder': 'Gök Gürültülü Orta veya Yoğun Kar',
   };
 
-  WeatherModel({
-    required this.city,
-    required this.condition,
-    required this.temperature,
-    required this.feelslike_c,
-    required this.last_updated,
-    required this.wind_kph,
-    required this.humidity,
-    required this.uv,
-    required this.vis_km,
-    required this.cloud,
-  });
-
-  factory WeatherModel.fromJson(Map<String, dynamic> json) {
-    return WeatherModel(
-      city: json['location']['name'],
-      condition: json['current']['condition']['text'],
-      temperature: (json['current']['temp_c'] as num).toInt(),
-      feelslike_c: (json['current']['feelslike_c'] as num).toDouble(),
-      last_updated: json['current']['last_updated'],
-      wind_kph: (json['current']['wind_kph'] as num).toDouble(),
-      humidity: json['current']['humidity'],
-      uv: json['current']['uv'],
-      vis_km: (json['current']['vis_km'] as num).toDouble(),
-      cloud: json['current']['cloud'],
-    );
-  }
-
-  static String _translateCondition(String englishCondition) {
+    static String _translateCondition(String englishCondition) {
     return conditions[englishCondition] ?? englishCondition;
   }
 
