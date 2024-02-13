@@ -11,9 +11,10 @@ class WeatherModel {
   final double vis_km;
   final int cloud;
 
+//data from api translated into turkish
   static const conditions = {
-    'Clear': 'Açık',
-    'Cloudy': 'Bulutlu',
+    'Clear ': 'Açık',
+    'Cloudy ': 'Bulutlu',
     'Rainy': 'Yağmurlu',
     'Snowy': 'Karlı',
     'Windy': 'Rüzgarlı',
@@ -28,9 +29,9 @@ class WeatherModel {
     'Heavy Snow': 'Şiddetli Kar',
     'Thunderstorm': 'Gök Gürültülü Fırtına',
     'Sunny': 'Güneşli',
-    'Patchy rain possible': 'Olası Yağmur',
-    'Patchy snow possible': 'Olası Kar',
-    'Patchy sleet possible': 'Olası Karla Karışık Yağmur',
+    'Patchy rain nearby': 'Olası Yağmur',
+    'Patchy snow nearby ggt': 'Olası Kar',
+    'Patchy sleet nearby ggt': 'Olası Karla Karışık Yağmur',
     'Patchy freezing drizzle possible': 'Olası Dondurucu Çiseleme',
     'Thundery outbreaks possible': 'Olası Gök Gürültü',
     'Blowing snow': 'Kar Fırtına',
@@ -64,7 +65,7 @@ class WeatherModel {
     'Light showers of ice pellets': 'Hafif Buzlu',
     'Moderate or heavy showers of ice pellets': 'Orta veya Şiddetli Buzlu',
     'Patchy light rain with thunder': 'Gök Gürültülü Hafif Yağmur',
-    'Moderate or heavy rain with thunder':
+    'Moderate or heavy rain in area with thunder':
     'Gök Gürültülü Orta veya Şiddetli Yağmur',
     'Patchy light snow with thunder': 'Gök Gürültülü Hafif Kar Yağışı',
     'Moderate or heavy snow with thunder': 'Gök Gürültülü Orta veya Yoğun Kar',
@@ -104,13 +105,15 @@ class WeatherModel {
 
   static String getConditionGif(String condition) {
     switch (condition) {
-      case 'Partly cloudy':
+      case 'Clear':
         return 'assets/gif/partly_cloud_sunny.gif';
       case 'Sunny':
         return 'assets/gif/sunny.gif';
       case 'Mist':
         return 'assets/gif/mist.gif';
       case 'Rainy':
+        return 'assets/gif/rainy.gif';
+        case 'Patchy rain nearby':
         return 'assets/gif/rainy.gif';
       default:
         return 'assets/gif/sunny.gif';
@@ -120,6 +123,12 @@ class WeatherModel {
     switch (condition) {
       case 'Partly cloudy':
       return 'assets/gif/night_partly_cloud.gif';
+      case 'Cloudy':
+      return 'assets/gif/night_partly_cloud.gif';
+      case 'Light rain shower':
+      return 'assets/gif/rainy.gif';
+      case 'Patchy rain nearby':
+        return 'assets/gif/rainy.gif';
       default:
         return 'assets/gif/night_partly_cloud.gif';
     }
