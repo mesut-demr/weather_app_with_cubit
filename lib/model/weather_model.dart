@@ -58,14 +58,14 @@ class WeatherModel {
     'Torrential rain shower': 'Sağanak Yağmur Yağışı',
     'Light sleet showers': 'Hafif Karla Karışık Yağmur',
     'Moderate or heavy sleet showers':
-        'Orta veya Şiddetli Karla Karışık Yağmur',
+    'Orta veya Şiddetli Karla Karışık Yağmur',
     'Light snow showers': 'Hafif Kar Yağışı',
     'Moderate or heavy snow showers': 'Orta veya Yoğun Kar Yağışı',
     'Light showers of ice pellets': 'Hafif Buzlu',
     'Moderate or heavy showers of ice pellets': 'Orta veya Şiddetli Buzlu',
     'Patchy light rain with thunder': 'Gök Gürültülü Hafif Yağmur',
     'Moderate or heavy rain with thunder':
-        'Gök Gürültülü Orta veya Şiddetli Yağmur',
+    'Gök Gürültülü Orta veya Şiddetli Yağmur',
     'Patchy light snow with thunder': 'Gök Gürültülü Hafif Kar Yağışı',
     'Moderate or heavy snow with thunder': 'Gök Gürültülü Orta veya Yoğun Kar',
   };
