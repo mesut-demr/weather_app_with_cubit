@@ -9,6 +9,10 @@ A simple weather App created using Flutter and Dart and using API from [WeatherA
 //ekran kaydı gelecek
 
 
+https://github.com/mesut-demr/weather_app_with_cubit/assets/81968170/cb92d4e4-1a23-4e41-a43c-bd847e89f07a
+
+
+
 # App Architecture
 
 - [x] The **BloC (cubit)** structure was used to manage the state.
