@@ -1,10 +1,10 @@
 # weather_app_with_cubit
 
-<mark>A simple</mark> weather App created using Flutter and Dart and using API from [WeatherApi](https://www.weatherapi.com/)
+A simple weather App created using Flutter and Dart and using API from [WeatherApi](https://www.weatherapi.com/)
 
 **A screenshot from the morning hours**
 
-H~2~O
+H<sub>2</sub>O
 https://github.com/mesut-demr/weather_app_with_cubit/assets/81968170/8e054260-6c1c-419b-a6e2-9d74809481b6
 
 
