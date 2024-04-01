@@ -4,7 +4,7 @@ A simple weather App created using Flutter and Dart and using API from [WeatherA
 
 **A screenshot from the morning hours**
 
-H<sub>2</sub>O
+
 https://github.com/mesut-demr/weather_app_with_cubit/assets/81968170/8e054260-6c1c-419b-a6e2-9d74809481b6
 
 
@@ -27,6 +27,6 @@ https://github.com/mesut-demr/weather_app_with_cubit/assets/81968170/3a5df7d8-df
 
 - Current temperature, condition, feels like temperature, wind, humidity, uv, vision, cloud and last updated.
 - It retrieves the weather forecast based on the user's location.
-- After receiving the user's location at the first login to the application, the location is held in memory with ==shared_preferences== and the location is prevented from opening at each login.   
+- After receiving the user's location at the first login to the application, the location is held in memory with **shared_preferences** and the location is prevented from opening at each login.   
 - The user can view the weather conditions of the desired city by selecting it from the list of cities.
 - Change the background colour and message content according to the time change.
