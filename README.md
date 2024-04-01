@@ -1,6 +1,6 @@
 # weather_app_with_cubit
 
-==A simple== weather App created using Flutter and Dart and using API from [WeatherApi](https://www.weatherapi.com/)
+<mark>A simple</mark> weather App created using Flutter and Dart and using API from [WeatherApi](https://www.weatherapi.com/)
 
 **A screenshot from the morning hours**
 
