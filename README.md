@@ -3,10 +3,7 @@
 A simple weather App created using Flutter and Dart and using API from [WeatherApi](https://www.weatherapi.com/)
 
 **A screenshot from the morning hours**
-| Syntax      | Description | Test Text     |
-| :---        | :----:      | ---:          |
-| Header      | Title       | Here's this   |
-| Paragraph   | Text        | And more      
+
 
 https://github.com/mesut-demr/weather_app_with_cubit/assets/81968170/8e054260-6c1c-419b-a6e2-9d74809481b6
 
